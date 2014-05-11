@@ -39,7 +39,13 @@ Angle.normalize = function(angle) {
     while (angle >= 360)
         angle -= 360;
     return angle;
-}
+};
+
+Angle.between = function(angle, left, right) {
+    var width = Angle.normalize(right - left);
+    var delta = Angle.normalize(angle - left);
+    return delta <= width;
+};
 
 if (typeof exports === 'object')
     module.exports = O3;
