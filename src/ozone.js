@@ -53,6 +53,27 @@ Angle.between = function(angle, left, right) {
     return delta <= width;
 };
 
+Angle.bisector = function(prev, next) {
+    prev = Angle.normalize(prev + 180);
+    next = Angle.normalize(next);
+
+    if (prev == next) {
+        return Angle.normalize(prev + 180);
+
+    } else if (prev > next) {
+        if ((prev - next) < 180)
+            return Angle.normalize((prev + next) / 2 + 180);
+        else
+            return Angle.normalize((prev + next) / 2);
+
+    } else {
+        if ((next - prev) < 180)
+            return Angle.normalize((prev + next) / 2 + 180);
+        else
+            return Angle.normalize((prev + next) / 2);
+    }
+}
+
 var BBox = O3.BBox = function(x, y) {
     this.left = this.right = x;
     this.top = this.bottom = y;

@@ -48,6 +48,17 @@ describe('Angle', function() {
       expect(Angle.between(180, 0, 360)).to.be.false;
     });
   });
+
+  describe('bisector()', function() {
+    it('should return the bisector angle', function() {
+      expect(Angle.bisector(0, 180)).to.equal(0);
+      expect(Angle.bisector(0, 90)).to.equal(315);
+      expect(Angle.bisector(0, 60)).to.equal(300);
+
+      expect(Angle.bisector(45, 135)).to.equal(0);
+      expect(Angle.bisector(45, -45)).to.equal(90);
+    });
+  });
 });
 
 describe('BBox', function() {
