@@ -31,5 +31,15 @@ O3.prototype.getEffectiveAngle = function() {
 O3.prototype.draw = function() {
 };
 
+var Angle = O3.Angle = {};
+
+Angle.normalize = function(angle) {
+    while (angle < 0)
+        angle += 360;
+    while (angle >= 360)
+        angle -= 360;
+    return angle;
+}
+
 if (typeof exports === 'object')
     module.exports = O3;
