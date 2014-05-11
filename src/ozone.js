@@ -79,7 +79,7 @@ var BBox = O3.BBox = function(x, y) {
     this.top = this.bottom = y;
 };
 
-BBox.prototype.extend = function (x, y) {
+BBox.prototype.addPoint = function (x, y) {
     if (x < this.left)
         this.left = x;
     if (x > this.right)
@@ -97,8 +97,8 @@ BBox.prototype.addSector = function (angle, width, radius) {
 
     // fast path for full circle
     if (width > 179.5) {
-        this.extend(radius, radius);
-        this.extend(-radius, -radius);
+        this.addPoint(radius, radius);
+        this.addPoint(-radius, -radius);
         return;
     }
 
@@ -109,18 +109,18 @@ BBox.prototype.addSector = function (angle, width, radius) {
     var rightRad = Angle.toRad(right);
 
     // add edge points to bounding box
-    this.extend(Math.sin(leftRad) * radius, Math.cos(leftRad) * radius);
-    this.extend(Math.sin(rightRad) * radius, Math.cos(rightRad) * radius);
+    this.addPoint(Math.sin(leftRad) * radius, Math.cos(leftRad) * radius);
+    this.addPoint(Math.sin(rightRad) * radius, Math.cos(rightRad) * radius);
 
     // add right angle points to bounding box if included in sector
     if (Angle.between(0, left, right))
-        this.extend(0, radius);
+        this.addPoint(0, radius);
     if (Angle.between(90, left, right))
-        this.extend(radius, 0);
+        this.addPoint(radius, 0);
     if (Angle.between(180, left, right))
-        this.extend(0, -radius);
+        this.addPoint(0, -radius);
     if (Angle.between(270, left, right))
-        this.extend(-radius, 0);
+        this.addPoint(-radius, 0);
 };
 
 BBox.prototype.getWidth = function() {

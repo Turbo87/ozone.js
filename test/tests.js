@@ -62,7 +62,7 @@ describe('Angle', function() {
 });
 
 describe('BBox', function() {
-  describe('extend()', function() {
+  describe('addPoint()', function() {
     it('should extend the bounding box in the right directions', function() {
       var bb = new BBox(0, -2);
 
@@ -71,14 +71,14 @@ describe('BBox', function() {
       expect(bb.top).to.equal(-2);
       expect(bb.bottom).to.equal(-2);
 
-      bb.extend(10, 20);
+      bb.addPoint(10, 20);
 
       expect(bb.left).to.equal(0);
       expect(bb.right).to.equal(10);
       expect(bb.top).to.equal(20);
       expect(bb.bottom).to.equal(-2);
 
-      bb.extend(-5, 10);
+      bb.addPoint(-5, 10);
 
       expect(bb.left).to.equal(-5);
       expect(bb.right).to.equal(10);
@@ -142,7 +142,7 @@ describe('BBox', function() {
   describe('getWidth/Height()', function() {
     it('should return the right size', function() {
       var bb = new BBox(0, 0);
-      bb.extend(10, 20);
+      bb.addPoint(10, 20);
 
       expect(bb.getWidth()).to.equal(10);
       expect(bb.getHeight()).to.equal(20);
