@@ -18,9 +18,12 @@
     "url": "https://github.com/turbo87/ozone.js.git"
   },
   "scripts": {
+    "test": "./node_modules/.bin/mocha -R spec"
   },
   "dependencies": {
   },
   "devDependencies": {
+    "mocha": "~1.18.2",
+    "chai": "~1.9.1"
   }
 }
