@@ -87,6 +87,58 @@ describe('BBox', function() {
     });
   });
 
+  describe('addSector()', function() {
+    it('skips small radius', function() {
+      var bb = new BBox(0, 0);
+      bb.addSector(90, 180, 0)
+
+      expect(bb.left).to.equal(0);
+      expect(bb.right).to.equal(0);
+      expect(bb.top).to.equal(0);
+      expect(bb.bottom).to.equal(0);
+    });
+
+    it('skips small width', function() {
+      var bb = new BBox(0, 0);
+      bb.addSector(90, 0, 10000)
+
+      expect(bb.left).to.equal(0);
+      expect(bb.right).to.equal(0);
+      expect(bb.top).to.equal(0);
+      expect(bb.bottom).to.equal(0);
+    });
+
+    it('handles circles correctly', function() {
+      var bb = new BBox(0, 0);
+      bb.addSector(90, 180, 10000)
+
+      expect(bb.left).to.equal(-10000);
+      expect(bb.right).to.equal(10000);
+      expect(bb.top).to.equal(10000);
+      expect(bb.bottom).to.equal(-10000);
+    });
+
+    it('handles 90 degree sector correctly', function() {
+      var bb = new BBox(0, 0);
+      bb.addSector(90, 45, 10000)
+
+      expect(bb.left).to.be.closeTo(-10000, 0.01);
+      expect(bb.right).to.be.closeTo(0, 0.01);
+      expect(bb.top).to.be.closeTo(10000 * Math.sin(Math.PI / 4), 0.01);
+      expect(bb.bottom).to.be.closeTo(-10000 * Math.sin(Math.PI / 4), 0.01);
+    });
+
+    it('handles 180 degree sector correctly', function() {
+      var bb = new BBox(0, 0);
+      bb.addSector(90, 90, 10000)
+
+      expect(bb.left).to.be.closeTo(-10000, 0.01);
+      expect(bb.right).to.be.closeTo(0, 0.01);
+      expect(bb.top).to.be.closeTo(10000, 0.01);
+      expect(bb.bottom).to.be.closeTo(-10000, 0.01);
+    });
+  });
+
   describe('getWidth/Height()', function() {
     it('should return the right size', function() {
       var bb = new BBox(0, 0);

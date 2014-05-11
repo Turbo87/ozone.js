@@ -90,13 +90,46 @@ BBox.prototype.extend = function (x, y) {
         this.bottom = y;
 };
 
+BBox.prototype.addSector = function (angle, width, radius) {
+    // ignore sector with less than 50cm radius or less than 0.5 degrees
+    if (radius < 0.5 || width < 0.5)
+        return;
+
+    // fast path for full circle
+    if (width > 179.5) {
+        this.extend(radius, radius);
+        this.extend(-radius, -radius);
+        return;
+    }
+
+    // calculate edge angles
+    var left = Angle.normalize(angle + 180 - width);
+    var right = Angle.normalize(angle + 180 + width);
+    var leftRad = Angle.toRad(left);
+    var rightRad = Angle.toRad(right);
+
+    // add edge points to bounding box
+    this.extend(Math.sin(leftRad) * radius, Math.cos(leftRad) * radius);
+    this.extend(Math.sin(rightRad) * radius, Math.cos(rightRad) * radius);
+
+    // add right angle points to bounding box if included in sector
+    if (Angle.between(0, left, right))
+        this.extend(0, radius);
+    if (Angle.between(90, left, right))
+        this.extend(radius, 0);
+    if (Angle.between(180, left, right))
+        this.extend(0, -radius);
+    if (Angle.between(270, left, right))
+        this.extend(-radius, 0);
+};
+
 BBox.prototype.getWidth = function() {
     return this.right - this.left;
-}
+};
 
 BBox.prototype.getHeight = function() {
     return this.top - this.bottom;
-}
+};
 
 if (typeof exports === 'object')
     module.exports = O3;
