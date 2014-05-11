@@ -33,6 +33,12 @@ O3.prototype.draw = function() {
 
 var Angle = O3.Angle = {};
 
+Angle.DEG_TO_RAD = Math.PI / 180;
+
+Angle.toRad = function(angle) {
+    return angle * Angle.DEG_TO_RAD;
+};
+
 Angle.normalize = function(angle) {
     while (angle < 0)
         angle += 360;
