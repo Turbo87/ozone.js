@@ -69,5 +69,13 @@ BBox.prototype.extend = function (x, y) {
         this.bottom = y;
 };
 
+BBox.prototype.getWidth = function() {
+    return this.right - this.left;
+}
+
+BBox.prototype.getHeight = function() {
+    return this.top - this.bottom;
+}
+
 if (typeof exports === 'object')
     module.exports = O3;

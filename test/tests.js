@@ -75,4 +75,14 @@ describe('BBox', function() {
       expect(bb.bottom).to.equal(-2);
     });
   });
+
+  describe('getWidth/Height()', function() {
+    it('should return the right size', function() {
+      var bb = new BBox(0, 0);
+      bb.extend(10, 20);
+
+      expect(bb.getWidth()).to.equal(10);
+      expect(bb.getHeight()).to.equal(20);
+    });
+  });
 });
