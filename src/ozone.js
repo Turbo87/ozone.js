@@ -47,5 +47,21 @@ Angle.between = function(angle, left, right) {
     return delta <= width;
 };
 
+var BBox = O3.BBox = function(x, y) {
+    this.left = this.right = x;
+    this.top = this.bottom = y;
+};
+
+BBox.prototype.extend = function (x, y) {
+    if (x < this.left)
+        this.left = x;
+    if (x > this.right)
+        this.right = x;
+    if (y > this.top)
+        this.top = y;
+    if (y < this.bottom)
+        this.bottom = y;
+};
+
 if (typeof exports === 'object')
     module.exports = O3;
