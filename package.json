@@ -1,0 +1,26 @@
+{
+  "name": "ozone",
+  "version": "0.1.0",
+  "description": "observation zone renderer based on HTML5 canvas API",
+  "keywords": [
+    "gliding",
+    "canvas",
+    "paragliding",
+    "soaring"
+  ],
+  "homepage": "https://github.com/turbo87/ozone.js",
+  "bugs": "https://github.com/turbo87/ozone.js/issues",
+  "license": "MIT",
+  "author": "Tobias Bieniek <tobias.bieniek@gmx.de>",
+  "main": "src/ozone.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/turbo87/ozone.js.git"
+  },
+  "scripts": {
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}
