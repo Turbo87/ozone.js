@@ -54,6 +54,32 @@ describe('O3', function() {
       expect(o3.next).to.be.closeTo(236.6, 0.01);
     });
   });
+
+  describe('getEffectiveAngle()', function() {
+    it('primarily uses angle property', function() {
+      o3.setAngle(120);
+      o3.setLegs(30, 175.6);
+      expect(o3.getEffectiveAngle()).to.be.closeTo(120, 0.01);
+    });
+
+    it('falls back to legs bisector', function() {
+      o3.setLegs(45, 135);
+      expect(o3.getEffectiveAngle()).to.be.closeTo(0, 0.01);
+
+      o3.setLegs(-45, 45);
+      expect(o3.getEffectiveAngle()).to.be.closeTo(270, 0.01);
+    });
+
+    it('works properly on first leg', function() {
+      o3.setLegs(45, null);
+      expect(o3.getEffectiveAngle()).to.be.closeTo(225, 0.01);
+    });
+
+    it('works properly on first leg', function() {
+      o3.setLegs(null, 90);
+      expect(o3.getEffectiveAngle()).to.be.closeTo(90, 0.01);
+    });
+  });
 });
 
 describe('Angle', function() {

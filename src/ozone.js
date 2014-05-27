@@ -31,6 +31,19 @@ O3.prototype.setLegs = function(prev, next) {
 };
 
 O3.prototype.getEffectiveAngle = function() {
+    if (this.angle !== null)
+        return this.angle;
+
+    if (this.prev !== null && this.next === null)
+        return this.prev + 180;
+
+    if (this.prev === null && this.next !== null)
+        return this.next;
+
+    if (this.prev !== null && this.next !== null)
+        return Angle.bisector(this.prev, this.next);
+
+    console.error('Undefined angle; use setLegs() or setAngle()');
 };
 
 O3.prototype.draw = function() {
