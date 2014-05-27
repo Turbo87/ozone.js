@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>ozone.js examples</title>
+
+    <style type="text/css">
+    canvas {
+      border: 1px solid #999;
+      box-shadow: 1px 1px 3px #EEE inset;
+    }
+    </style>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="500" height="400"></canvas>
+
+    <script type="text/javascript" src="../src/ozone.js"></script>
+    <script type="text/javascript">
+
+    var o = new O3('myCanvas');
+
+    o.setZone({
+      'A1': 45,
+      'R1': 10000,
+      'A2': 180,
+      'R2': 500,
+    });
+
+    o.setLegs(80, 200);
+    o.setAngle(30);
+
+    o.draw();
+
+    setInterval(function() {
+      o.setAngle(o.angle + 1);
+      o.draw();
+    }, 30);
+    </script>
+  </body>
+</html>
