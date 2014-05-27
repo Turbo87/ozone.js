@@ -12,10 +12,24 @@ var O3 = function(id, opt_options) {
     if (!this.ctx)
         return console.error('could not get drawing context on #' + id);
 
+    this.options = {
+        fillOpacity: 0.7,
+        fillColor: '#fff',
+        strokeOpacity: 1,
+        strokeColor: '#000',
+        strokeWidth: 3,
+        strokeShadowColor: '#999'
+    };
+
+    // set user-specified options
+    this.setOptions(opt_options || {});
+
     this.zone = this.angle = this.prev = this.next = null;
 };
 
 O3.prototype.setOptions = function(options) {
+    for (var attrname in options)
+        this.options[attrname] = options[attrname];
 }
 
 O3.prototype.setZone = function(zone) {
@@ -48,7 +62,75 @@ O3.prototype.getEffectiveAngle = function() {
 };
 
 O3.prototype.draw = function() {
+    this.clear();
+
+    var angle = this.getEffectiveAngle();
+
+    // calculate bounding box of the observation zone
+    var bb = new BBox(0, 0);
+    bb.addSector(angle, this.zone.A1, this.zone.R1);
+    bb.addSector(angle, this.zone.A2, this.zone.R2);
+
+    // calculate pixel per meter resolution factor
+    var factor = Math.min(this.canvas.width / bb.getWidth(),
+                          this.canvas.height / bb.getHeight());
+
+    // scale radius to pixels
+    var R1 = this.zone.R1 * factor;
+    var R2 = this.zone.R2 * factor;
+
+    // calculate reference point coordinate
+    var x = this.canvas.width / 2;
+    var y = this.canvas.height / 2;
+
+    x += (-bb.left - bb.getWidth() / 2) * factor;
+    y += (bb.top - bb.getHeight() / 2) * factor;
+
+    var radA = Angle.toRad(angle);
+    var radA1 = Angle.toRad(this.zone.A1);
+    var radA2 = Angle.toRad(this.zone.A2);
+
+    this.ctx.beginPath();
+
+    if (this.zone.A2 > 0.5 && this.zone.A2 < 179.5)
+        this.ctx.moveTo(x, y);
+
+    this.ctx.arc(x, y, R2,
+                 radA + Math.PI / 2 - radA2,
+                 radA + Math.PI / 2 - radA1,
+                 this.zone.A2 < this.zone.A1);
+
+    this.ctx.arc(x, y, R1,
+                 radA + Math.PI / 2 - radA1,
+                 radA + Math.PI / 2 + radA1);
+
+    this.ctx.arc(x, y, R2,
+                 radA + Math.PI / 2 + radA1,
+                 radA + Math.PI / 2 + radA2,
+                 this.zone.A2 < this.zone.A1);
+
+    this.ctx.closePath();
+
+    var options = this.options;
+
+    this.ctx.globalAlpha = options.fillOpacity;
+    this.ctx.fillStyle = options.fillColor;
+    this.ctx.shadowBlur = 0;
+
+    this.ctx.fill();
+
+    this.ctx.globalAlpha = options.strokeOpacity;
+    this.ctx.strokeStyle = options.strokeColor;
+    this.ctx.lineWidth = options.strokeWidth;
+    this.ctx.shadowColor = options.strokeShadowColor;
+    this.ctx.shadowBlur = options.strokeWidth;
+
+    this.ctx.stroke();
 };
+
+O3.prototype.clear = function() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+}
 
 var Angle = O3.Angle = {};
 
