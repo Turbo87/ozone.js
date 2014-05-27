@@ -22,6 +22,18 @@ describe('O3', function() {
     o3 = new O3();
   });
 
+  describe('setZone()', function() {
+    it('sets the zone property', function() {
+      var zone = {
+        A1: 90,
+        R1: 10000
+      };
+
+      o3.setZone(zone);
+      expect(o3.zone).to.eql(zone);
+    });
+  });
+
   describe('setAngle()', function() {
     it('sets the angle property', function() {
       o3.setAngle(123.4);
@@ -38,7 +50,7 @@ describe('O3', function() {
   });
 
   describe('setLegs()', function() {
-    it('sets the angles property', function() {
+    it('sets the legs property', function() {
       o3.setLegs(30, 175.6);
       expect(o3.prev).to.be.closeTo(30, 0.01);
       expect(o3.next).to.be.closeTo(175.6, 0.01);

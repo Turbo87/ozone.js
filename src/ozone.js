@@ -12,13 +12,14 @@ var O3 = function(id, opt_options) {
     if (!this.ctx)
         return console.error('could not get drawing context on #' + id);
 
-    this.angle = this.prev = this.next = null;
+    this.zone = this.angle = this.prev = this.next = null;
 };
 
 O3.prototype.setOptions = function(options) {
 }
 
 O3.prototype.setZone = function(zone) {
+    this.zone = zone;
 };
 
 O3.prototype.setAngle = function(angle) {
