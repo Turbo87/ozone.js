@@ -4,6 +4,58 @@ var O3 = require('../src/ozone');
 var Angle = O3.Angle;
 var BBox = O3.BBox;
 
+// mock out DOM
+global.document = {
+  getElementById: function() {
+    return {
+      getContext: function() {
+        return {}
+      }
+    };
+  }
+};
+
+describe('O3', function() {
+  var o3;
+
+  beforeEach(function() {
+    o3 = new O3();
+  });
+
+  describe('setAngle()', function() {
+    it('sets the angle property', function() {
+      o3.setAngle(123.4);
+      expect(o3.angle).to.be.closeTo(123.4, 0.01);
+    });
+
+    it('normalizes the angle', function() {
+      o3.setAngle(432.1);
+      expect(o3.angle).to.be.closeTo(72.1, 0.01);
+
+      o3.setAngle(-123.4);
+      expect(o3.angle).to.be.closeTo(236.6, 0.01);
+    });
+  });
+
+  describe('setLegs()', function() {
+    it('sets the angles property', function() {
+      o3.setLegs(30, 175.6);
+      expect(o3.prev).to.be.closeTo(30, 0.01);
+      expect(o3.next).to.be.closeTo(175.6, 0.01);
+    });
+
+    it('normalizes the angles', function() {
+      o3.setLegs(360, 175.6);
+      expect(o3.prev).to.be.closeTo(0, 0.01);
+      expect(o3.next).to.be.closeTo(175.6, 0.01);
+
+      o3.setLegs(42, -123.4);
+      expect(o3.prev).to.be.closeTo(42, 0.01);
+      expect(o3.next).to.be.closeTo(236.6, 0.01);
+    });
+  });
+});
+
 describe('Angle', function() {
   describe('toRad()', function() {
     it('converts degrees to radian', function() {

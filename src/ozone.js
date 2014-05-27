@@ -11,6 +11,8 @@ var O3 = function(id, opt_options) {
     this.ctx = this.canvas.getContext('2d');
     if (!this.ctx)
         return console.error('could not get drawing context on #' + id);
+
+    this.angle = this.prev = this.next = null;
 };
 
 O3.prototype.setOptions = function(options) {
@@ -20,9 +22,12 @@ O3.prototype.setZone = function(zone) {
 };
 
 O3.prototype.setAngle = function(angle) {
+    this.angle = Angle.normalize(angle);
 };
 
 O3.prototype.setLegs = function(prev, next) {
+    this.prev = Angle.normalize(prev);
+    this.next = Angle.normalize(next);
 };
 
 O3.prototype.getEffectiveAngle = function() {
